@@ -13,6 +13,11 @@ total_spent = 0
 
 
 class Share:
+
+    '''
+    Model of a Share object. Use it to instanciate a share.
+    '''
+
     def __init__(self, cost, rate, name):
         self.cost = float(cost)
         self.rate = float(rate)
@@ -27,20 +32,24 @@ class Share:
         return f'{self.name} - ROI: {self.return_on_investment}, Price: {self.cost}, Ratio: {self.ratio}'
 
 
-''' Read the csv file'''
+# Read the csv file and load data into 'csv_shares' Python list
 with open('dataset1.csv') as file:
     data = csv.DictReader(file, delimiter=',')
     for row in data:
         csv_shares.append(Share(row['price'], row['profit'], row['name']))
 
 
-'''Algo Glouton sac à dos'''
+# Algo optimisé
+# > Tri des actions par ratio (celles qui ont le meilleur ratio sont les plus intéressantes à acheter)
+# > Iteration sur chaque action : on achete celles qui ont le meilleur ratio jusqu'à épuisement des 500€
 sorted_shares = sorted(csv_shares,  key=lambda share: share.ratio, reverse=True)
 for share in sorted_shares:
     if MONEY >= share.cost:
         choosen_shares.append(share)
         MONEY -= share.cost
 
+
+# Display the final results
 print('You shoud buy the following shares:')
 for itm in choosen_shares:
     total_roi += itm.return_on_investment
