@@ -14,21 +14,24 @@ total_spent = 0
 
 class Share:
     def __init__(self, cost, rate, name):
-        self.cost = int(cost)
-        self.rate = int(rate[:-1])
+        self.cost = float(cost)
+        self.rate = float(rate)
         self.name = name
         self.return_on_investment = self.cost * (1 + self.rate / 100) - self.cost
-        self.ratio = self.return_on_investment / self.cost
+        try:
+            self.ratio = self.return_on_investment / self.cost
+        except ZeroDivisionError:
+            self.ratio = 0.0
 
     def __str__(self):
         return f'{self.name} - ROI: {self.return_on_investment}, Price: {self.cost}, Ratio: {self.ratio}'
 
 
 ''' Read the csv file'''
-with open('bruteforce-data.csv') as file:
+with open('dataset1.csv') as file:
     data = csv.DictReader(file, delimiter=',')
     for row in data:
-        csv_shares.append(Share(row['cost'], row['rate'], row['name']))
+        csv_shares.append(Share(row['price'], row['profit'], row['name']))
 
 
 '''Algo Glouton sac à dos'''
