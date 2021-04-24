@@ -30,10 +30,12 @@ class Share:
 
 
 # Read the csv file and load data into 'csv_shares' Python list
+# Time complexity: O(n)
 with open('bruteforce-data.csv') as file:
     data = csv.DictReader(file, delimiter=',')
     for row in data:
-        csv_shares.append(Share(row['price'], row['profit'], row['name']))
+        if float(row['price']) > 0:
+            csv_shares.append(Share(row['price'], row['profit'], row['name']))
 
 
 def roi_total(shares_list: list):
@@ -74,6 +76,7 @@ def force_brute(shares_list: list, money: int):
     nb_possibilites = 2 ** nb_shares
     best_choice = []  # stocke la meilleure combianison temporaire
 
+    # Time complexity: O(n * 2^n)
     for possibilite in range(nb_possibilites):
         binary = bin(possibilite)[2:]  # ex: bin(67) prints 'Ob1000011' => bin(67)[2:] prints '1000011'
 
