@@ -30,7 +30,7 @@ class Share:
 
 
 # Read the csv file and load data into 'csv_shares' Python list
-with open('dataset1.csv') as file:
+with open('bruteforce-data.csv') as file:
     data = csv.DictReader(file, delimiter=',')
     for row in data:
         csv_shares.append(Share(row['price'], row['profit'], row['name']))

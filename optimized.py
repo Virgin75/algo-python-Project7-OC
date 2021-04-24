@@ -35,15 +35,19 @@ class Share:
 # Read the csv file and load data into 'csv_shares' Python list
 with open('dataset1.csv') as file:
     data = csv.DictReader(file, delimiter=',')
+    # Time complexity: O(n)
     for row in data:
-        csv_shares.append(Share(row['price'], row['profit'], row['name']))
+        if float(row['price']) > 0:
+            csv_shares.append(Share(row['price'], row['profit'], row['name']))
+    # > Tri des actions par ratio (celles qui ont le meilleur ratio sont les plus intéressantes à acheter)
+    # Time complexity: O(n log n)
+    csv_shares.sort(key=lambda share: share.ratio, reverse=True)
 
 
 # Algo optimisé
-# > Tri des actions par ratio (celles qui ont le meilleur ratio sont les plus intéressantes à acheter)
 # > Iteration sur chaque action : on achete celles qui ont le meilleur ratio jusqu'à épuisement des 500€
-sorted_shares = sorted(csv_shares,  key=lambda share: share.ratio, reverse=True)
-for share in sorted_shares:
+# Time complexity: O(n)
+for share in csv_shares:
     if MONEY >= share.cost:
         choosen_shares.append(share)
         MONEY -= share.cost
